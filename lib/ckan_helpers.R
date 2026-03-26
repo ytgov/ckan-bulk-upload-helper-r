@@ -111,8 +111,29 @@ upload_all_files_to_package <- function(package_name) {
   }
   
   add_log_entry(str_c("Uploaded ", number_of_resources_added, " new resources for ", package_name, "."))
-  add_log_entry(str_c("Did not upload ", number_of_existing_resources, " existing package resources for ", package_name, "."))
+  
+  if(number_of_existing_resources > 0) {
+    add_log_entry(str_c("Did not upload ", number_of_existing_resources, " existing package resources for ", package_name, "."))
+  }
   
   package_id
   
 }
+
+# Upload all files in input/ to the matching package names:
+upload_all_input_files <- function() {
+  
+  package_directories <- dir_ls("input", type = "directory")
+  
+  for (i in seq_along(package_directories)) { 
+    
+    current_package_directory <- path_file(package_directories[i])
+    
+    add_log_entry(str_c("Finding local resources in ", current_package_directory, "."))
+    
+    upload_all_files_to_package(current_package_directory)
+    
+  }
+  
+}
+
