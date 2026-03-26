@@ -21,7 +21,7 @@ To use it:
 2. Within the `input/` folder in this R project, add a folder with the same name as your package. (The package name is visible in the URL when you're viewing the package page on open.yukon.ca, it's the "slug-ified" version of the package title. For example, the package name would be `list-of-registered-yukon-societies`, not `List of registered Yukon societies`.)
 3. In `bulk_upload.R`, add a function call of `upload_all_input_files()` to upload all new resources, or `upload_all_files_to_package("[package_name]")` (with your package name as the one parameter) to upload files for that package specifically.
 4. Run the `bulk_upload.R` script.
-5. Optionally, save the run_log to a CSV file to review, or view it within the R console.
+5. Optionally, save the `run_log` to a CSV file to review, or view it within the R console.
 
 ## For more information
 
