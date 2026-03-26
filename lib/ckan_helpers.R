@@ -52,29 +52,67 @@ if(file_exists(".env")) {
 upload_all_files_to_package <- function(package_name) {
   
   # package_name <- "bulk-upload-testing-001"
+  package <- NULL;
   
   tryCatch({
     package <- package_show(package_name, as = "table")
   }, error = function(e) {
-    
-    # e |> View()
     add_log_entry(e$message)
     add_log_entry(str_c("No package with the name ", package_name, " found on ", ckan_url))
-    return(NULL);
-    
   })
 
+  # package |> View()
+  
+  if(is.null(package)) {
+    return(NULL);
+  }
   
   package_id <- package$id
+  existing_package_resources <- package$resources |> pull(name)
+  
+  number_of_resources_added <- 0
+  number_of_existing_resources <- 0
   
   add_log_entry(str_c("Adding resources for ", package_name, " (", package_id, ") found on ", ckan_url))
   
   # TODO: upload matching files here.
+  folder_path <- path("input", package_name)
+  
+  resources_to_upload <- dir_ls(folder_path, type = "file")
+  
+  for (i in seq_along(resources_to_upload)) { 
+    
+    new_resource_name <- path_ext_remove(path_file(resources_to_upload[i]))
+    
+    if(new_resource_name %in% existing_package_resources) {
+      
+      add_log_entry(str_c("Did not upload ", resources_to_upload[i], "; resource named '", new_resource_name, "' already exists."))
+      
+      number_of_existing_resources <- number_of_existing_resources + 1
+      
+    }
+    else {
+      
+      add_log_entry(str_c("Uploading ", resources_to_upload[i]))
+      
+      resource_create(
+        package_id = package_id,
+        upload = resources_to_upload[i],
+        name = new_resource_name
+      )
+      
+      number_of_resources_added <- number_of_resources_added + 1
+      
+      Sys.sleep(0.4)
+    }
+    
+
+    
+  }
+  
+  add_log_entry(str_c("Uploaded ", number_of_resources_added, " new resources for ", package_name, "."))
+  add_log_entry(str_c("Did not upload ", number_of_existing_resources, " existing package resources for ", package_name, "."))
   
   package_id
   
 }
-
-# upload_all_files_to_package("bulk-upload-testing-001")
-
-# upload_all_files_to_package("non-existent-bulk-upload-testing-001")
