@@ -8,7 +8,7 @@ To connect to the CKAN 2.11 API, this requires the development version of [ckanr
 
 ## Initial setup
 
-1. Install the R packages found in `lib/ckan_helpers.R` (typically using [renv](https://rstudio.github.io/renv/)).
+1. Install the R packages found in `lib/ckan_helpers.R` (typically using the `renv::restore()` function from [renv](https://rstudio.github.io/renv/)).
 2. Duplicate the `.env.example` file as `.env` and add your CKAN API token to the `.env` file (which is not Git-tracked).
 
 ## For more information
