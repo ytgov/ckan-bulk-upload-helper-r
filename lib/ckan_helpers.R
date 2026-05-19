@@ -68,6 +68,8 @@ upload_all_files_to_package <- function(package_name) {
   }
   
   package_id <- package$id
+  
+  # TODO: update this to work when a package has no resources
   existing_package_resources <- package$resources |> pull(name)
   
   number_of_resources_added <- 0
