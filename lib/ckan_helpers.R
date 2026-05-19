@@ -85,7 +85,6 @@ upload_all_files_to_package <- function(package_name, replace_existing_files = F
   
   add_log_entry(str_c("Adding resources for ", package_name, " (", package_id, ") found on ", ckan_url))
   
-  # TODO: upload matching files here.
   folder_path <- path("input", package_name)
   
   resources_to_upload <- dir_ls(folder_path, type = "file")
